@@ -110,7 +110,7 @@ DSH 工作状态联动。
 
 **Source code** — © [JP-Alan](https://github.com/JP-Shi)，保留所有权利（All rights reserved）。
 
-**特别许可 / Named exception** 🎓：作者明确允许 **中国科学技术大学 · 词元工坊（USTC Token Workshop）**
+**特别许可 / Named exception** 🎓：作者明确允许 **中国科学技术大学 · 词元工坊（USTC TokenWorks）**
 将该宠物（素材与代码）作为其产品与服务的内置形象使用并随附分发。本例外仅授予词元工坊，
 不适用于其他任何第三方。
 

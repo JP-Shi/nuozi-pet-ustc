@@ -247,6 +247,9 @@ window.__ModuleLoader__.load({
 			const eggCheckRef = React.useRef(0);
 			const [paint, setPaint] = React.useState({ mode: 'idle', bubble: null });
 			const posRef = React.useRef(null);
+			// base-state slot timers — persist across brief interruptions so a
+			// frequent slot (busy drama) can never starve a slower one (pace)
+			const slotsRef = React.useRef({ base: null });
 
 			useSpritePainter(spriteRef, displayRef, scale);
 
@@ -355,44 +358,49 @@ window.__ModuleLoader__.load({
 						return;
 					}
 
+					if (base === 'idle') slotsRef.current.base = null; // fresh slots next work state
 					if (base !== 'idle') {
-						if (m.phase !== base) {
-							// entering a base state seeds its idle-style slots,
-							// distributed by how free the state feels
-							const data = { base };
+						// seed per base-state change only; timers survive
+						// interruptions (look/busy/wave) and keep counting
+						const slots = slotsRef.current;
+						if (slots.base !== base) {
+							slots.base = base;
 							if (base === 'working') {
-								data.nextPace = now + rand(5000, 12000);
-								data.nextLook = now + rand(4000, 11000);
-								data.nextBusy = now + rand(4500, 9000);
+								slots.nextPace = now + rand(5000, 12000);
+								slots.nextLook = now + rand(4000, 11000);
+								slots.nextBusy = now + rand(4500, 9000);
+							} else {
+								slots.nextPace = now + rand(4000, 10000);
+								slots.nextLook = now + rand(4000, 10000);
 							}
-							if (base === 'waiting') {
-								data.nextLook = now + rand(4000, 10000);
-								data.nextPace = now + rand(4000, 10000);
-							}
-							machineRef.current = { phase: base, until: 0, data };
+						}
+						if (m.phase !== base) {
+							machineRef.current = { phase: base, until: 0, data: { base } };
 							return;
 						}
 						const d = m.data;
 						// pacing slot: working takes a stretch break, waiting
-						// paces impatiently — out, busy/seat-pause, back to anchor
-						if ((base === 'working' || base === 'waiting') && !d.pace && d.nextPace !== undefined
-							&& now >= d.nextPace && !document.hidden && posRef.current
+						// paces impatiently — out, pause, back to anchor;
+						// nextPace is rescheduled when the return leg lands
+						if (!d.pace && slots.nextPace !== undefined && now >= slots.nextPace
+							&& !document.hidden && posRef.current
 							&& !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 							const range = rand(60, 180) * (Math.random() < 0.5 ? -1 : 1);
 							d.pace = { anchorX: posRef.current.x, targetX: posRef.current.x + range, speed: rand(45, 65), pauseUntil: 0, returning: false, moving: false };
 						}
 						// look slot: working thinks out loud, waiting scans
 						// the room for you
-						if ((base === 'working' || base === 'waiting') && !d.pace
-							&& d.nextLook !== undefined && now >= d.nextLook && !document.hidden) {
+						if (!d.pace && slots.nextLook !== undefined && now >= slots.nextLook && !document.hidden) {
+							slots.nextLook = now + rand(4000, base === 'working' ? 11000 : 10000);
 							machineRef.current = { phase: 'look', until: now + rand(1300, 2600), data: { base, index: Math.floor(Math.random() * 16) } };
 							return;
 						}
 						// busy-drama slot (row 7): works, tires out, startles
 						// awake, gets back to it — 2~3 full loops so every beat
 						// of the arc reads, then straight back to thinking
-						if (base === 'working' && !d.pace
-							&& d.nextBusy !== undefined && now >= d.nextBusy && !document.hidden) {
+						if (base === 'working' && !d.pace && slots.nextBusy !== undefined
+							&& now >= slots.nextBusy && !document.hidden) {
+							slots.nextBusy = now + rand(4500, 9000);
 							machineRef.current = { phase: 'busy', until: now + rand(2800, 4300), data: { base } };
 							return;
 						}
@@ -452,7 +460,7 @@ window.__ModuleLoader__.load({
 								pace.moving = false;
 								if (pace.returning) {
 									m.data.pace = null;
-									m.data.nextPace = nowMs + rand(10000, 24000);
+									slotsRef.current.nextPace = nowMs + rand(10000, 24000);
 								} else {
 									pace.pauseUntil = nowMs + rand(1500, 3000);
 								}

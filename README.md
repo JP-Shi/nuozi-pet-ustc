@@ -1,6 +1,9 @@
 # 糯籽 · Nuozi Desktop Pet (DSH plugin)
 
 > ### 作者 / Author: **JP-Alan（微电子学院最强大的畜生）**
+> **GitHub: <https://github.com/JP-Shi>**
+>
+> ⚠ 引用本工程或素材时，**必须**注明作者并附上作者 GitHub 主页链接：<https://github.com/JP-Shi>
 
 把成熟的中科大「糯籽」宠物素材接入 DeepSeek Harness Web GUI，并将宠物动作状态与
 DSH 工作状态联动。
@@ -100,6 +103,10 @@ DSH 工作状态联动。
 > Commercial use requires prior written permission.
 >
 > License: <https://creativecommons.org/licenses/by-nc-nd/4.0/>
+
+**引用要求 / Attribution requirement**：任何形式的引用、转载、演示提及本工程或
+其素材，都必须署名作者 **JP-Alan** 并附作者 GitHub 主页链接
+**<https://github.com/JP-Shi>**（即 CC BY-NC-ND 中 “proper attribution” 的最低标准）。
 
 **Source code** — © [JP-Alan](https://github.com/JP-Shi)，保留所有权利（All rights reserved）。
 

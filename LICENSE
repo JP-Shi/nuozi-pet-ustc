@@ -19,8 +19,14 @@ Commercial use requires prior written permission.
 License:
 https://creativecommons.org/licenses/by-nc-nd/4.0/
 
-Attribution:
-  Nuozi Pet © JP-Alan (School of Microelectronics, USTC).
+Attribution (required in any citation, reproduction, or derivative-work
+discussion — the minimum bar for "proper attribution" under CC BY-NC-ND):
+
+  Nuozi Pet © JP-Alan (School of Microelectronics, USTC)
+  Author's GitHub homepage: https://github.com/JP-Shi
+
+Any use that credits the work without linking the author's GitHub homepage
+does NOT satisfy the attribution requirement of this license.
 
 ================================================================================
 SOURCE CODE (client.js, index.js, cordis.patch.yml, and other code files)

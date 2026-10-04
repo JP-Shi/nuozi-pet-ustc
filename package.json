@@ -1,0 +1,30 @@
+{
+  "name": "@local/nuozi-pet",
+  "version": "1.0.1",
+  "private": true,
+  "description": "糯籽 desktop pet for DeepSeek Harness — links pet action states to DSH working state (idle / working / waiting / 握草 on errors)",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "assets",
+    "README.md"
+  ]
+}

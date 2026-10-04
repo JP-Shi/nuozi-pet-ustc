@@ -1,0 +1,31 @@
+NUOZI PET — LICENSE
+
+================================================================================
+VISUAL ASSETS (everything under assets/, including the spritesheet atlas,
+the atlas cells, and the easter-egg images)
+================================================================================
+
+The Nuozi Pet visual assets are licensed under
+CC BY-NC-ND 4.0 International.
+
+You may share the original, unmodified assets for non-commercial purposes
+with proper attribution.
+
+You may not distribute modified, cropped, recolored, redrawn, rigged,
+animated, or otherwise derivative versions.
+
+Commercial use requires prior written permission.
+
+License:
+https://creativecommons.org/licenses/by-nc-nd/4.0/
+
+Attribution:
+  Nuozi Pet © JP-Alan (School of Microelectronics, USTC).
+
+================================================================================
+SOURCE CODE (client.js, index.js, cordis.patch.yml, and other code files)
+================================================================================
+
+Copyright © JP-Alan. All rights reserved.
+
+================================================================================

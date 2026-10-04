@@ -1,0 +1,5 @@
+# 糯籽 pet local bundle: mounts the nuozi-pet host half (state machine +
+# asset routes). The Client half joins the web boot graph through dsh.client.
+- insert:
+    - id: nuozi-pet
+      name: '@local/nuozi-pet'

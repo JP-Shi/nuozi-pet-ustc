@@ -64,6 +64,44 @@ DSH 工作状态联动。
   焦点离开输入框（含切换窗口）立即恢复；发送成功会先挥手迎接
 - `prefers-reduced-motion` 时关闭散步/抖动
 
+## 桌面窗口 / Desktop window（可选载体）
+
+除了 Web GUI 内的 `shell.overlay` 载体，本工程还带一个**系统级窗口**载体：无边框、
+背景透明、始终置顶、不进任务栏，并且**只在角色自身像素上**接收鼠标，其余区域完全
+穿透，所以不会挡住桌面上的其它窗口。
+
+它不复制任何动画逻辑：窗口所需的图集词表（单元格尺寸、行号、帧数、时长、握草分段）
+直接取自 `client.js` 通过客户端加载器注册的那个插件对象，行/帧/时长因此只有一处
+定义。主进程同样不含图集知识——窗口尺寸由渲染进程上报的单元格尺寸推导，图集解码
+成功后才显示窗口。
+
+```sh
+npm install     # 仅桌面载体需要（electron 是 devDependency）
+npm run desktop
+```
+
+默认读取 DSH Web UI 的 `http://127.0.0.1:3080`（DSH 自身默认端口），可用
+`NUOZI_DSH_BASE` 指向别处，例如词元工坊发行版：
+
+```sh
+NUOZI_DSH_BASE=http://127.0.0.1:51195 npm run desktop
+```
+
+| 操作 | 行为 |
+|---|---|
+| 拖动 | 窗口跟随光标，按拖动方向切换跑动帧；位置存 `userData/nuozi-desktop-pet.json` |
+| 单击 | 摸头：抬蹄挥手 |
+| 双击 | 跳跃 |
+| 在糯籽身上滚动滚轮 | 缩放 0.3×–1.2×（以底部中心为锚点，随位置一起记住） |
+| 右键 | 大小预设、总在最前、回到右下角、退出 |
+
+与 Web GUI 载体的差异（有意为之）：没有 `typing` 状态（桌面窗口没有输入框可看）；
+`drag` 与踱步移动的是窗口本身；`dad` 隐藏彩蛋只保留在 Web GUI 内——它的帧是按整页
+叠加层编排的，而且彩蛋应当只属于那个载体。「握草」/ 断网反应两个载体都有。
+
+排障：`NUOZI_DEBUG_LOG=<文件>` 从主进程与渲染进程写出启动轨迹。透明无边框窗口没有
+可用控制台，这是唯一能看到它停在哪一步的方式。
+
 ## 配置（profile `cordis.patch.yml` 中 `nuozi-pet` 条目的 `config`）
 
 | 键 | 默认 | 说明 |
@@ -82,6 +120,10 @@ DSH 工作状态联动。
   background-position）、状态机节拍（140ms）、拖拽与彩蛋逻辑；每秒轮询宿主快照。
 - `assets/` — `atlas.png`（1536×2288, 8×11）＋ `grass.png`（握草关键帧）＋
   `dad-0..5.png`（空闲彩蛋 6 帧，已底对齐归一化画布）。
+- `desktop/` — 可选的系统级窗口载体：`main.js`（Electron 主进程：窗口、透明与点击
+  穿透、光标轮询、拖动与踱步、缩放、状态轮询）、`preload.cjs`、`index.html`、
+  `shim.js`（最小客户端模块加载器替身，用来取到 `client.js` 的图集词表）、
+  `pet-window.js`（窗口渲染与动作状态机）。
 - `cordis.patch.yml` — bundle 注册片段：把该 `- insert` 条目并入你 profile 的
   `cordis.patch.yml`（并在 `dsh.profile.bundles` 中启用 `@local/nuozi-pet`）。
 

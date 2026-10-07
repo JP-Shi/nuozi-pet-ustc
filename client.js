@@ -668,6 +668,15 @@ window.__ModuleLoader__.load({
 					NuoziPet,
 				));
 			},
+			// Surface-neutral atlas vocabulary for the desktop carrier
+			// (desktop/pet-window.js). Exposed here so rows, frame counts, the
+			// cell size and the 握草 staging keep exactly one definition across
+			// both surfaces; the Client loader ignores properties it does not use.
+			vocabulary: {
+				cellW: CELL_W, cellH: CELL_H, atlasW: ATLAS_W, atlasH: ATLAS_H,
+				row: ROW, loop: LOOP, look: LOOK_FRAMES,
+				staging: { grassMs: GRASS_MS, failedMs: FAILED_MS },
+			},
 		};
 	},
 });

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'none'; img-src pet:; style-src 'unsafe-inline'; script-src 'self'"
+		/>
+		<title>糯籽</title>
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				background: transparent;
+				overflow: hidden;
+				user-select: none;
+				-webkit-user-select: none;
+				cursor: default;
+			}
+			#stage {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			#stage[data-dragging='true'] {
+				cursor: grabbing;
+			}
+			/* Only the character's own pixels accept the mouse; the window is
+			   click-through everywhere else (see pet-window.js hitTest). */
+			#sprite {
+				position: absolute;
+				background-repeat: no-repeat;
+				background-position: 0 0;
+				filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.18));
+			}
+			#grass {
+				position: absolute;
+				left: 50%;
+				bottom: 0;
+				transform: translateX(-50%);
+				pointer-events: none;
+			}
+			#grass[hidden] {
+				display: none;
+			}
+			/* 握草: the stunned keypose shakes; disabled when motion is reduced. */
+			#stage[data-mode='error'] {
+				animation: nuozi-desktop-shake 0.5s ease-in-out 2;
+			}
+			@keyframes nuozi-desktop-shake {
+				0%,
+				100% {
+					translate: 0 0;
+				}
+				25% {
+					translate: -4px 0;
+				}
+				55% {
+					translate: 4px 0;
+				}
+				80% {
+					translate: -2px 0;
+				}
+			}
+			@media (prefers-reduced-motion: reduce) {
+				#stage[data-mode='error'] {
+					animation: none;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="stage">
+			<div id="sprite" aria-hidden="true"></div>
+			<img id="grass" alt="" hidden />
+		</div>
+		<!-- Order matters: the shim installs window.__ModuleLoader__, the Client half
+		     registers itself and carries the atlas vocabulary, then the window half
+		     reads that vocabulary and drives the desktop surface. -->
+		<script src="shim.js"></script>
+		<script src="../client.js"></script>
+		<script src="pet-window.js"></script>
+	</body>
+</html>

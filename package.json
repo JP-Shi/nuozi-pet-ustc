@@ -20,10 +20,17 @@
       "inject": []
     }
   },
+  "scripts": {
+    "desktop": "electron desktop/main.js"
+  },
+  "devDependencies": {
+    "electron": "^44.5.1"
+  },
   "files": [
     "index.js",
     "client.js",
     "cordis.patch.yml",
+    "desktop",
     "assets",
     "README.md"
   ]
